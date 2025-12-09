@@ -1,0 +1,19 @@
+---
+- name: Pull Node.js app image
+  docker_image:
+    name: ajayvishwakarma457/devops-node-app:v1
+    source: pull
+
+- name: Stop existing container
+  docker_container:
+    name: nodeapp
+    state: absent
+
+- name: Run new container
+  docker_container:
+    name: nodeapp
+    image: ajayvishwakarma457/devops-node-app:v1
+    state: started
+    restart_policy: always
+    ports:
+      - "3000:3000"
