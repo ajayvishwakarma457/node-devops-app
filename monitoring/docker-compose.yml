@@ -20,8 +20,10 @@ services:
     container_name: loki
     ports:
       - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
     volumes:
       - ./loki/loki-config.yml:/etc/loki/local-config.yaml
+      - ./loki-data:/loki
 
   promtail:
     image: grafana/promtail:2.8.0

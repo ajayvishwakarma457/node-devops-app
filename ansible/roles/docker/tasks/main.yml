@@ -1,24 +1,87 @@
----
-- name: Update apt
-  apt:
-    update_cache: yes
+# ---
+# - name: Update apt
+#   apt:
+#     update_cache: yes
 
-- name: Install required packages
+# - name: Install required packages
+#   apt:
+#     name:
+#       - apt-transport-https
+#       - ca-certificates
+#       - curl
+#       - software-properties-common
+#     state: present
+
+# - name: Install Docker
+#   apt:
+#     name: docker.io
+#     state: present
+
+# - name: Enable Docker service
+#   systemd:
+#     name: docker
+#     enabled: yes
+#     state: started
+
+
+
+
+---
+
+- name: Remove old Docker versions
   apt:
     name:
-      - apt-transport-https
+      - docker
+      - docker.io
+      - docker-engine
+      - containerd
+      - runc
+    state: absent
+    purge: yes
+  become: true
+  ignore_errors: yes
+
+- name: Update apt cache
+  apt:
+    update_cache: yes
+  become: true
+
+- name: Install system dependencies
+  apt:
+    name:
       - ca-certificates
       - curl
-      - software-properties-common
+      - gnupg
+      - lsb-release
     state: present
+  become: true
 
-- name: Install Docker
+- name: Add Docker GPG key
+  ansible.builtin.apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+  become: true
+
+- name: Add Docker repository
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} stable"
+    state: present
+  become: true
+
+- name: Install Docker engine + Compose plugin
   apt:
-    name: docker.io
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-compose-plugin
     state: present
+    update_cache: yes
+  become: true
 
-- name: Enable Docker service
+- name: Enable and start Docker service
   systemd:
     name: docker
-    enabled: yes
     state: started
+    enabled: true
+  become: true
