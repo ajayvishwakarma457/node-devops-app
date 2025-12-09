@@ -24,6 +24,9 @@ services:
     volumes:
       - ./loki/loki-config.yml:/etc/loki/local-config.yaml
       - ./loki-data:/loki
+      - ./loki-data/wal:/wal
+      - ./loki-data/chunks:/chunks
+      - ./loki-data/boltdb:/boltdb
 
   promtail:
     image: grafana/promtail:2.8.0
