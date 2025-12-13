@@ -1,0 +1,15 @@
+.github/workflows/ci-cd.yml
+
+Dockerfile
+
+terraform/main.tf
+
+ansible/playbook.yml
+
+k8s/deployments/*
+
+monitoring/prometheus/prometheus.yml
+
+monitoring/loki/loki-config.yml
+
+===============
