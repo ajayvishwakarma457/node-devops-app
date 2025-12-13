@@ -1,0 +1,10 @@
+version: v1.25.0
+
+ignore:
+  # Example vulnerability ignore
+  SNYK-JS-EXAMPLE-123456:
+    - '*':
+        reason: "False positive / accepted risk"
+        expires: 2025-12-31
+
+patch: {}
